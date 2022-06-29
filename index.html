@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/Hotstar_II.html">
+    <link rel="stylesheet" href="/trending.html">
+    <style>
+          #query{
+              width:300px;
+         }
+          #movies{
+              height:350px;
+              width: 120%;
+              margin-top: none;
+              margin-top: 50px;
+          }
+          #dog{
+              width: 80.5%;
+              height: 80.5%;
+          }
+          #navbar{
+                  display: flex;
+                  height: 50px;
+                  border: 1px solid black;
+          }
+          #navbar{
+          border-radius: 8px;
+          width: 70%;
+          height: 75px;
+          margin:auto;
+          margin-top: 15px;
+          display: flex;
+         justify-content:space-between; 
+          background-color:darkcyan ;
+          box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset;
+      }
+      #navbar > div {
+          margin-right: 20px;
+          font-size: large;
+          font-weight: bold;
+          display: flex;
+          margin: 10px;
+          padding: 10px;
+          gap: 20px;
+          margin-top: 15px;
+      }
+    
+      #inp{
+          display: flex;
+           flex-direction: row-reverse;
+           width: 500px;
+      }
+      #query{
+          height: 30px;
+          width: 400px;
+         
+      }
+      #FFF{
+          height: 35px;
+          
+      }
+      #move{
+          height: 700px;
+          width: 40%;
+          margin: auto;
+          margin-left: 400px;
+          padding: 20px;
+      }
+      #move:hover{
+        box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+      
+    }
+      #img{
+          width: 80%;
+          height: 500px;
+      }
+      #a{
+          color: violet;
+      }
+
+    </style>
+</head>
+<body id="body">
+    <div id="navbar">
+         <div>
+            <img id="hot_logo" src="https://secure-media.hotstarext.com/web-assets/prod/images/brand-logos/disney-hotstar-logo-dark.svg" alt="">
+        </div>
+            <div >home </div>  
+            <div> <a href="/trending.html">Trending Movies</a> </div>   
+            <div> <a id="a" href="/trendin.html">Search</a></div>
+            <div id="FFF">
+            <div id="inp">
+                <input id="query" oninput="debounce(main) " />
+                            <!-- debounce(main,1000)  main()--> 
+                          
+        </div>
+        </div>
+    </div>
+        <div id="movies">
+        </div>
+    </div>
+    
+   
+    
+</body>
+</html>
+
+<script>
+    let timerid;
+
+    let movies = document.getElementById("movies");
+    movies.innerHTML=null;
+   
+       async function searchmovies()
+        {
+            try{
+            let input = document.getElementById("query").value;
+            let res = await fetch(`https://www.omdbapi.com/?apikey=e34ed918&s=${input}`)
+            let data = await res.json();
+            console.log(data)
+            let id;
+
+            if(input != data.Search  && input.length===3){
+                
+             movies.innerHTML=null;
+
+                let img = document.createElement("img");
+                  img.setAttribute("src","https://imageio.forbes.com/blogs-images/zarastone/files/2017/05/21Amazon-Barkley-404.jpg?fit=bounds&format=jpg&width=960")
+                  img.setAttribute("id","dog")
+                  movies.append(img) 
+              }  if( input ==="" || input===" ")
+                {    
+                         movies.innerHTML=null;
+                }
+            // console.log(data.Search)
+          let array=data.Search;
+           return array;
+            console.log(data)
+    }
+        catch(err)
+        {
+            console.log(err)
+        }
+}
+
+        function appedmovies(data)
+        {  
+            let query = document.getElementById("query");
+            query.innerHTML="null"
+        data.forEach(function(elem,index,array){
+          
+            
+             movies.innerHTML=null;
+             movies.setAttribute("id","move")
+             console.log(elem)
+
+                let p = document.createElement("h3")
+                     p.innerHTML=` Movie Name  : ${elem.Title}`
+                        
+
+                let h3 = document.createElement("h3")
+                    h3.innerText=`Release Date${elem.Year}`;
+
+                let imgs = document.createElement("img")
+                   imgs.setAttribute("src",elem.Poster)
+                   imgs.setAttribute("id","img")
+                   imgs.addEventListener("click",function()
+                   {
+                    //    window.location.href="/open_full_img.html"
+                    Open_It(elem)
+                   })
+                 
+
+                   let type = document.createElement("h3")
+                     type.innerText=`Type : ${elem.Type}`
+        
+                movies.append(p,h3,type,imgs)
+
+            })
+         
+        }
+        async function main(){      
+        try{
+
+         let data = await searchmovies();
+
+            if(data===undefined){
+                return false;
+            }
+           
+
+         appedmovies(data)
+        }
+        catch(err){
+            console.log(err)
+        }
+    }
+
+    function debounce(func,delay)
+    {
+       console.log(timerid)  
+        
+       if(timerid)
+        {
+            clearTimeout(timerid)
+        }
+
+        timerid=setTimeout(function(){
+
+         main();
+         let query = document.getElementById("query");
+            query.innerHTML="null"
+
+        },delay)
+
+
+
+    }
+    function Open_It(elem)
+    {
+        let arr=JSON.parse(localStorage.getItem("save")) || [];
+       
+        arr.push(elem);
+        localStorage.setItem("save",JSON.stringify(arr))
+        window.location.href="/open_full_img.html"
+
+    }
+
+
+
+
+
+</script>

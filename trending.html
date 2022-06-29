@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #movies{
+            display: grid;
+            grid-template-columns: repeat(4,3fr);
+        }
+    </style>
+</head>
+<body>
+   
+    <div id="movies"></div>
+    
+</body>
+</html>
+<script>
+
+
+
+async function searchmovies()
+        {
+            try{
+
+             key="715cdb38f8004b6939b1a1908d51a1c5"
+            let res = await fetch(`https://api.themoviedb.org/3/trending/all/day?api_key=${key}`)
+            let data = await res.json();
+            console.log(data)
+            let id;
+            // console.log(data.results)
+
+        
+          let array=data.results;
+        //    return array;
+        //     console.log(array)
+        appedmovies(array)
+    }
+        catch(err)
+        {
+            console.log(err)
+        }
+}
+searchmovies();
+
+function appedmovies(array)
+        {  
+        array.map(function(elem,index,array){
+            let movies = document.getElementById("movies")
+            //  movies.innerHTML=null;
+             
+             console.log(array)
+             let div = document.createElement("div")
+             let iframe = document.createElement("iframe")
+               iframe.setAttribute=("src",elem.poster_path)
+
+               let imgs = document.createElement("img")
+                   imgs.setAttribute("src",elem.backdrop_path)
+
+                let p = document.createElement("h3")
+                     p.innerHTML=` Movie Title   : ${elem.vote_average}`
+                     
+                        
+
+                let h3 = document.createElement("p")
+                    h3.innerText=`Movie Descripction : ${elem.overview}`;
+
+                    
+                let lang = document.createElement("h3")
+                    lang.innerText=`Movie Name : ${elem.original_name}`;
+              
+
+                   let type = document.createElement("h3")
+                     type.innerText=`Language : ${elem.original_language}`
+
+               div.append(imgs,p,h3,type,lang,iframe)
+               movies.append(div)
+
+            })
+         
+        }
+        appedmovies()
+</script>

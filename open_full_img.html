@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #Imges_Div{
+            height: 400px;
+            width: 70%;
+            margin: auto;
+            margin-top: 50px;
+        }
+        #div{
+            padding: 20px;
+            height: 530px;
+            width: 80%;
+            margin: auto;
+            margin-top: 50px;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+      
+        }
+        #img{
+            width: 100%;
+            margin: auto;
+            height: 380px;
+        }
+    </style>
+</head>
+<body>
+    <div id="Imges_Div">
+
+    </div>
+    
+</body>
+</html>
+<script>
+     let arr=JSON.parse(localStorage.getItem("save")) || [];
+       
+    
+     arr.forEach((elem) => {
+        let  movies = document.getElementById("Imges_Div")
+        movies.innerHTML=null;
+        let div = document.createElement("div")
+          div.setAttribute("id","div")
+
+        let p = document.createElement("h3")
+                     p.innerHTML=` Movie Name  : ${elem.Title}`
+                        
+
+                let h3 = document.createElement("h3")
+                    h3.innerText=`Release Date${elem.Year}`;
+
+                let imgs = document.createElement("img")
+                   imgs.setAttribute("src",elem.Poster)
+                   imgs.setAttribute("id","img")
+                  
+                 
+
+                   let type = document.createElement("h3")
+                     type.innerText=`Type : ${elem.Type}`
+         
+                 div.append(p,h3,type,imgs)
+                 movies.append(div)
+
+
+         
+     });
+
+    
+</script>
